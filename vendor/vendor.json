@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "GxskxwBSBrqiVWQhO6HFi7hQysw=",
+			"path": "github.com/normegil/log",
+			"revision": "23bfecdf823541f8713587721f9c30688eccaa5e",
+			"revisionTime": "2016-09-22T11:31:46Z"
+		}
+	],
+	"rootPath": "github.com/normegil/sdl"
+}
