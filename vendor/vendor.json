@@ -3,9 +3,9 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "GxskxwBSBrqiVWQhO6HFi7hQysw=",
+			"checksumSHA1": "Yp9dVKT8niTwxGbNTyFw7DfN9NQ=",
 			"path": "github.com/normegil/log",
-			"revision": "23bfecdf823541f8713587721f9c30688eccaa5e",
+			"revision": "4b46c785de7523b57cd308843650d1e486887bf6",
 			"revisionTime": "2016-09-22T11:31:46Z"
 		}
 	],

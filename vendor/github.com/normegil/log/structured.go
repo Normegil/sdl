@@ -8,29 +8,23 @@ type StructuredLog struct {
 }
 
 // Log log a message to the output defined in logrus.
-func (l StructuredLog) Log(lvl Level, str Structure, v ...interface{}) {
+func (l StructuredLog) Log(lvl Level, v ...interface{}) {
 	if nil != l.Logger {
-		fields := logrus.Fields{}
-		for key, value := range str {
-			fields[key] = value
-		}
-
-		logger := l.Logger.WithFields(fields)
 		switch lvl {
 		case PANIC:
-			logger.Panic(v...)
+			l.Logger.Panic(v...)
 		case FATAL:
-			logger.Fatal(v...)
+			l.Logger.Fatal(v...)
 		case ERROR:
-			logger.Error(v...)
+			l.Logger.Error(v...)
 		case WARN:
-			logger.Warn(v...)
+			l.Logger.Warn(v...)
 		case INFO:
-			logger.Info(v...)
+			l.Logger.Info(v...)
 		case DEBUG:
-			logger.Debug(v...)
+			l.Logger.Debug(v...)
 		case TRACE:
-			logger.WithField("level", "trace").Print(v...)
+			l.Logger.WithField("level", "trace").Print(v...)
 		}
 	}
 }

@@ -13,9 +13,8 @@ type BasicLog struct {
 }
 
 // Log log your message on the specified level, with a structure holding the fields you want to log and ending with the message
-func (l BasicLog) Log(lvl Level, str Structure, v ...interface{}) {
+func (l BasicLog) Log(lvl Level, v ...interface{}) {
 	if nil != l.Logger && lvl >= l.Level {
-		l.structure = l.structure.With(str)
 		switch lvl {
 		case PANIC:
 			l.Logger.Panic(l.toString(l.structure, lvl, v...)...)
