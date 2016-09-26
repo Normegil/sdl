@@ -2,20 +2,25 @@ package games
 
 import "time"
 
-// FPSCounter is a counter counting the frame per seconds currently displayed.
-type FPSCounter struct {
+// FPSCounter sends back the number of fps displayed per second
+type FPSCounter interface {
+	FPS() float32
+}
+
+// UnlimitedFPSCounter is a counter counting the frame per seconds currently displayed. The value is recalculated every frame
+type UnlimitedFPSCounter struct {
 	lastTick time.Time
 }
 
 // NewFPSCounter will build a new counter
-func NewFPSCounter() *FPSCounter {
-	return &FPSCounter{
+func NewFPSCounter() *UnlimitedFPSCounter {
+	return &UnlimitedFPSCounter{
 		lastTick: time.Now(),
 	}
 }
 
 // FPS returns the number of FPS estimated for the last frame
-func (s *FPSCounter) FPS() float32 {
+func (s *UnlimitedFPSCounter) FPS() float32 {
 	now := time.Now()
 	timePassed := now.UnixNano() - s.lastTick.UnixNano()
 	fps := float32(time.Second) / float32(timePassed)
@@ -23,9 +28,9 @@ func (s *FPSCounter) FPS() float32 {
 	return fps
 }
 
-// LimitedFPSCounter define a FPSCounter with a refresh rate, to limit the update of the counter.
+// LimitedFPSCounter is a counter counting the frame per seconds currently displayed. The value is recalculated depending on RefreshRate
 type LimitedFPSCounter struct {
-	*FPSCounter
+	*UnlimitedFPSCounter
 	RefreshRate time.Duration
 
 	lastCalculated time.Time
@@ -35,9 +40,9 @@ type LimitedFPSCounter struct {
 // NewLimitedFPSCounter will build a new counter, with default settings
 func NewLimitedFPSCounter() *LimitedFPSCounter {
 	return &LimitedFPSCounter{
-		FPSCounter:     &FPSCounter{lastTick: time.Now()},
-		RefreshRate:    time.Second / 2,
-		lastCalculated: time.Now(),
+		UnlimitedFPSCounter: &UnlimitedFPSCounter{lastTick: time.Now()},
+		RefreshRate:         time.Second / 2,
+		lastCalculated:      time.Now(),
 	}
 }
 
@@ -45,7 +50,7 @@ func NewLimitedFPSCounter() *LimitedFPSCounter {
 func (l *LimitedFPSCounter) FPS() float32 {
 	timeSpentSinceLastCalculated := time.Duration(time.Now().UnixNano() - l.lastCalculated.UnixNano())
 	if timeSpentSinceLastCalculated > l.RefreshRate || 0 == l.result {
-		l.result = l.FPSCounter.FPS()
+		l.result = l.UnlimitedFPSCounter.FPS()
 		l.lastCalculated = time.Now()
 	}
 	l.lastTick = time.Now()
